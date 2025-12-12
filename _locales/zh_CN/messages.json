@@ -10,5 +10,33 @@
   "popupTitle": {
     "message": "你好扩展",
     "description": "Title in the popup"
+  },
+  "templateLabel": {
+    "message": "选择模板",
+    "description": "Label for the template selection dropdown"
+  },
+  "templateYanwenXiaobao": {
+    "message": "燕文小包",
+    "description": "Yanwen Xiaobao template name"
+  },
+  "inputPlaceholder": {
+    "message": "输入订单号",
+    "description": "Placeholder for order number input"
+  },
+  "addBtn": {
+    "message": "添加",
+    "description": "Label for add button"
+  },
+  "exportBtn": {
+    "message": "导出",
+    "description": "Label for export button"
+  },
+  "listHeader": {
+    "message": "已添加记录",
+    "description": "Header for the list of added orders"
+  },
+  "removeBtn": {
+    "message": "删除",
+    "description": "Label for remove button"
   }
 }

@@ -1,6 +1,29 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
   <body>
     <h1 id="title">Hello Extensions</h1>
+    <div class="control-group">
+      <label id="template-label" for="template-select">Template:</label>
+      <select id="template-select">
+      </select>
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="order-input" placeholder="Enter Order Number">
+      <button id="add-btn">Add</button>
+    </div>
+
+    <h2 id="list-header">Added Orders</h2>
+    <ul id="order-list">
+    </ul>
+
+    <div class="control-group">
+      <button id="export-btn">Export</button>
+    </div>
+
+    <script src="lib/xlsx.full.min.js"></script>
     <script src="main.js"></script>
   </body>
 </html>

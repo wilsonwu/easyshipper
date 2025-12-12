@@ -10,5 +10,33 @@
   "popupTitle": {
     "message": "Hello Extensions",
     "description": "Title in the popup"
+  },
+  "templateLabel": {
+    "message": "Select Template",
+    "description": "Label for the template selection dropdown"
+  },
+  "templateYanwenXiaobao": {
+    "message": "Yanwen Xiaobao",
+    "description": "Yanwen Xiaobao template name"
+  },
+  "inputPlaceholder": {
+    "message": "Enter Order Number",
+    "description": "Placeholder for order number input"
+  },
+  "addBtn": {
+    "message": "Add",
+    "description": "Label for add button"
+  },
+  "exportBtn": {
+    "message": "Export",
+    "description": "Label for export button"
+  },
+  "listHeader": {
+    "message": "Added Orders",
+    "description": "Header for the list of added orders"
+  },
+  "removeBtn": {
+    "message": "Remove",
+    "description": "Label for remove button"
   }
 }

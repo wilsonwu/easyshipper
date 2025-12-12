@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "你好扩展",
+    "message": "EasyShipper 易发货",
     "description": "The name of the application"
   },
   "appDesc": {
-    "message": "基础扩展",
+    "message": "导出物流订单到Excel模板，支持AI地址解析。",
     "description": "The description of the application"
   },
   "popupTitle": {
-    "message": "你好扩展",
+    "message": "EasyShipper 易发货",
     "description": "Title in the popup"
   },
   "templateLabel": {

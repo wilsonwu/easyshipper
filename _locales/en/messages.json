@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "Hello Extensions",
+    "message": "EasyShipper",
     "description": "The name of the application"
   },
   "appDesc": {
-    "message": "Base Level Extension",
+    "message": "Export shipping orders to Excel templates with AI address parsing.",
     "description": "The description of the application"
   },
   "popupTitle": {
-    "message": "Hello Extensions",
+    "message": "EasyShipper",
     "description": "Title in the popup"
   },
   "templateLabel": {

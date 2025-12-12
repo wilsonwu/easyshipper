@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "你好扩展",
+    "description": "The name of the application"
+  },
+  "appDesc": {
+    "message": "基础扩展",
+    "description": "The description of the application"
+  },
+  "popupTitle": {
+    "message": "你好扩展",
+    "description": "Title in the popup"
+  }
+}

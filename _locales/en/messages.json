@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "Hello Extensions",
+    "description": "The name of the application"
+  },
+  "appDesc": {
+    "message": "Base Level Extension",
+    "description": "The description of the application"
+  },
+  "popupTitle": {
+    "message": "Hello Extensions",
+    "description": "Title in the popup"
+  }
+}

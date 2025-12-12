@@ -8,16 +8,49 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('export-btn').innerText = chrome.i18n.getMessage("exportBtn");
   document.getElementById('list-header').innerText = chrome.i18n.getMessage("listHeader");
 
-  const templates = [
-    { id: 'yanwen_xiaobao', nameKey: 'templateYanwenXiaobao' }
-  ];
-
   const select = document.getElementById('template-select');
-  templates.forEach(tpl => {
-    const option = document.createElement('option');
-    option.value = tpl.id;
-    option.innerText = chrome.i18n.getMessage(tpl.nameKey);
-    select.appendChild(option);
+
+  // Function to list files in the templates directory
+  function getTemplates() {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.getPackageDirectoryEntry((root) => {
+        root.getDirectory('templates', { create: false }, (dirEntry) => {
+          const dirReader = dirEntry.createReader();
+          const entries = [];
+          
+          const readEntries = () => {
+            dirReader.readEntries((results) => {
+              if (!results.length) {
+                resolve(entries.filter(e => e.isFile && e.name.endsWith('.xlsx')));
+              } else {
+                entries.push(...results);
+                readEntries();
+              }
+            }, (error) => reject(error));
+          };
+          
+          readEntries();
+        }, (error) => {
+          // If directory doesn't exist or other error
+          console.warn("Could not access templates directory:", error);
+          resolve([]); 
+        });
+      });
+    });
+  }
+
+  // Populate dropdown
+  getTemplates().then(files => {
+    files.forEach(file => {
+      const id = file.name.replace('.xlsx', '');
+      const nameKey = 'template_' + id;
+      const localizedName = chrome.i18n.getMessage(nameKey);
+      
+      const option = document.createElement('option');
+      option.value = id; // Value is the filename without extension
+      option.innerText = localizedName || id; // Fallback to ID if no translation
+      select.appendChild(option);
+    });
   });
 
   const orderInput = document.getElementById('order-input');
@@ -85,10 +118,25 @@ document.addEventListener('DOMContentLoaded', function() {
       // Start with the header
       const newData = [header];
 
+      // Load config and settings
+      const settings = await chrome.storage.sync.get(null);
+      const templateConfig = settings.templateConfig || {};
+      const currentTemplateFields = templateConfig[selectedTemplate] || [];
+
       orders.forEach((order) => {
         // Create a new row. 
         // For now, we assume the Order Number goes to the first column (Column A).
-        const newRow = [order]; 
+        const newRow = [];
+        newRow[0] = order;
+
+        currentTemplateFields.forEach(field => {
+          if (field.col && field.value !== undefined) {
+            // Convert column letter to index (A -> 0, B -> 1, etc.)
+            const colIndex = XLSX.utils.decode_col(field.col);
+            newRow[colIndex] = field.value;
+          }
+        });
+        
         newData.push(newRow);
       });
 

@@ -15,7 +15,7 @@
     "message": "选择模板",
     "description": "Label for the template selection dropdown"
   },
-  "templateYanwenXiaobao": {
+  "template_yanwen_xiaobao": {
     "message": "燕文小包",
     "description": "Yanwen Xiaobao template name"
   },
@@ -38,5 +38,49 @@
   "removeBtn": {
     "message": "删除",
     "description": "Label for remove button"
+  },
+  "optionsTitle": {
+    "message": "设置",
+    "description": "Title for the options page"
+  },
+  "azureOpenAISettings": {
+    "message": "Azure OpenAI 设置",
+    "description": "Header for Azure OpenAI settings"
+  },
+  "azureEndpoint": {
+    "message": "Endpoint",
+    "description": "Label for Azure Endpoint"
+  },
+  "azureApiKey": {
+    "message": "API Key",
+    "description": "Label for Azure API Key"
+  },
+  "azureDeploymentName": {
+    "message": "Deployment Name",
+    "description": "Label for Azure Deployment Name"
+  },
+  "templateSettings": {
+    "message": "模板设置",
+    "description": "Header for Template settings"
+  },
+  "yanwenXiaobaoSettings": {
+    "message": "燕文小包设置",
+    "description": "Header for Yanwen Xiaobao specific settings"
+  },
+  "warehouseLabel": {
+    "message": "交易仓",
+    "description": "Label for warehouse field"
+  },
+  "productNameLabel": {
+    "message": "产品名称",
+    "description": "Label for product name field"
+  },
+  "saveBtn": {
+    "message": "保存",
+    "description": "Label for save button"
+  },
+  "saveSuccess": {
+    "message": "设置保存成功！",
+    "description": "Message shown when settings are saved"
   }
 }

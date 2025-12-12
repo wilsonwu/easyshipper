@@ -4,7 +4,11 @@
   "version": "1.0",
   "manifest_version": 3,
   "default_locale": "en",
-  "permissions": ["sidePanel"],
+  "permissions": ["sidePanel", "storage"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "side_panel": {
     "default_path": "main.html"
   },

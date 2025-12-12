@@ -15,7 +15,7 @@
     "message": "Select Template",
     "description": "Label for the template selection dropdown"
   },
-  "templateYanwenXiaobao": {
+  "template_yanwen_xiaobao": {
     "message": "Yanwen Xiaobao",
     "description": "Yanwen Xiaobao template name"
   },
@@ -38,5 +38,49 @@
   "removeBtn": {
     "message": "Remove",
     "description": "Label for remove button"
+  },
+  "optionsTitle": {
+    "message": "Settings",
+    "description": "Title for the options page"
+  },
+  "azureOpenAISettings": {
+    "message": "Azure OpenAI Settings",
+    "description": "Header for Azure OpenAI settings"
+  },
+  "azureEndpoint": {
+    "message": "Endpoint",
+    "description": "Label for Azure Endpoint"
+  },
+  "azureApiKey": {
+    "message": "API Key",
+    "description": "Label for Azure API Key"
+  },
+  "azureDeploymentName": {
+    "message": "Deployment Name",
+    "description": "Label for Azure Deployment Name"
+  },
+  "templateSettings": {
+    "message": "Template Settings",
+    "description": "Header for Template settings"
+  },
+  "yanwenXiaobaoSettings": {
+    "message": "Yanwen Xiaobao Settings",
+    "description": "Header for Yanwen Xiaobao specific settings"
+  },
+  "warehouseLabel": {
+    "message": "Transaction Warehouse",
+    "description": "Label for warehouse field"
+  },
+  "productNameLabel": {
+    "message": "Product Name",
+    "description": "Label for product name field"
+  },
+  "saveBtn": {
+    "message": "Save",
+    "description": "Label for save button"
+  },
+  "saveSuccess": {
+    "message": "Settings saved successfully!",
+    "description": "Message shown when settings are saved"
   }
 }

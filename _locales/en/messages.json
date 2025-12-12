@@ -71,6 +71,10 @@
     "message": "Yanwen Xiaobao Settings",
     "description": "Header for Yanwen Xiaobao specific settings"
   },
+  "saveBtn": {
+    "message": "Save",
+    "description": "Label for save button"
+  },
   "saveSuccess": {
     "message": "Settings saved successfully!",
     "description": "Message shown when settings are saved"

@@ -15,10 +15,6 @@
     "message": "Select Template",
     "description": "Label for the template selection dropdown"
   },
-  "template_yanwen_xiaobao": {
-    "message": "Yanwen Xiaobao",
-    "description": "Yanwen Xiaobao template name"
-  },
   "inputPlaceholder": {
     "message": "Enter Order Number",
     "description": "Placeholder for order number input"
@@ -74,18 +70,6 @@
   "yanwenXiaobaoSettings": {
     "message": "Yanwen Xiaobao Settings",
     "description": "Header for Yanwen Xiaobao specific settings"
-  },
-  "warehouseLabel": {
-    "message": "Transaction Warehouse",
-    "description": "Label for warehouse field"
-  },
-  "productNameLabel": {
-    "message": "Product Name",
-    "description": "Label for product name field"
-  },
-  "saveBtn": {
-    "message": "Save",
-    "description": "Label for save button"
   },
   "saveSuccess": {
     "message": "Settings saved successfully!",

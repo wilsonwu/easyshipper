@@ -15,10 +15,6 @@
     "message": "选择模板",
     "description": "Label for the template selection dropdown"
   },
-  "template_yanwen_xiaobao": {
-    "message": "燕文小包",
-    "description": "Yanwen Xiaobao template name"
-  },
   "inputPlaceholder": {
     "message": "输入订单号",
     "description": "Placeholder for order number input"
@@ -70,18 +66,6 @@
   "templateSettings": {
     "message": "模板设置",
     "description": "Header for Template settings"
-  },
-  "yanwenXiaobaoSettings": {
-    "message": "燕文小包设置",
-    "description": "Header for Yanwen Xiaobao specific settings"
-  },
-  "warehouseLabel": {
-    "message": "交易仓",
-    "description": "Label for warehouse field"
-  },
-  "productNameLabel": {
-    "message": "产品名称",
-    "description": "Label for product name field"
   },
   "saveBtn": {
     "message": "保存",

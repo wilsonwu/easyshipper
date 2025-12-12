@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       throw new Error("Azure settings are missing.");
     }
 
-    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress. If province/state is missing, infer it from the city/country. Address: ${address}`;
+    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress, recipientCurrency. If province/state is missing, infer it from the city/country. Infer the currency code (e.g. USD, GBP, EUR) based on the country. Address: ${address}`;
 
     const url = `${items.azureEndpoint}/openai/deployments/${items.azureDeployment}/chat/completions?api-version=2023-05-15`;
     
@@ -199,6 +199,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       let cityColIndex = -1;
       let zipColIndex = -1;
       let addressColIndex = -1;
+      let currencyColIndex = -1;
 
       if (header && header.length > 0) {
           phoneColIndex = header.findIndex(h => h && h.toString().trim() === "收件人电话");
@@ -208,6 +209,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           cityColIndex = header.findIndex(h => h && h.toString().trim() === "收件人城市");
           zipColIndex = header.findIndex(h => h && h.toString().trim() === "收件人邮编");
           addressColIndex = header.findIndex(h => h && h.toString().trim() === "收件人地址");
+          currencyColIndex = header.findIndex(h => h && h.toString().trim() === "币种类型");
       }
 
       // Start with the header
@@ -233,6 +235,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (cityColIndex !== -1) newRow[cityColIndex] = order.addressData.recipientCity;
             if (zipColIndex !== -1) newRow[zipColIndex] = order.addressData.recipientZip;
             if (addressColIndex !== -1) newRow[addressColIndex] = order.addressData.recipientAddress;
+            if (currencyColIndex !== -1) newRow[currencyColIndex] = order.addressData.recipientCurrency;
         }
 
         currentTemplateFields.forEach(field => {

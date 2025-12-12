@@ -19,6 +19,10 @@
     "message": "输入订单号",
     "description": "Placeholder for order number input"
   },
+  "phonePlaceholder": {
+    "message": "输入电话号码",
+    "description": "Placeholder for phone number input"
+  },
   "addBtn": {
     "message": "添加",
     "description": "Label for add button"

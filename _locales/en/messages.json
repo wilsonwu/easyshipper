@@ -19,6 +19,10 @@
     "message": "Enter Order Number",
     "description": "Placeholder for order number input"
   },
+  "phonePlaceholder": {
+    "message": "Enter Phone Number",
+    "description": "Placeholder for phone number input"
+  },
   "addBtn": {
     "message": "Add",
     "description": "Label for add button"

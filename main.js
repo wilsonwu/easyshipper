@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   document.getElementById('title').innerText = getMessage("popupTitle");
   document.getElementById('template-label').innerText = getMessage("templateLabel");
   document.getElementById('order-input').placeholder = getMessage("inputPlaceholder");
+  document.getElementById('phone-input').placeholder = getMessage("phonePlaceholder");
   document.getElementById('add-btn').innerText = getMessage("addBtn");
   document.getElementById('export-btn').innerText = getMessage("exportBtn");
   document.getElementById('list-header').innerText = getMessage("listHeader");
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
   const orderInput = document.getElementById('order-input');
+  const phoneInput = document.getElementById('phone-input');
   const addBtn = document.getElementById('add-btn');
   const orderList = document.getElementById('order-list');
   const exportBtn = document.getElementById('export-btn');
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     orderList.innerHTML = '';
     orders.forEach((order, index) => {
       const li = document.createElement('li');
-      li.textContent = order;
+      li.textContent = `${order.orderNumber} - ${order.phoneNumber}`;
       const removeBtn = document.createElement('button');
       removeBtn.textContent = getMessage("removeBtn");
       removeBtn.style.marginLeft = '10px';
@@ -79,10 +81,12 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   addBtn.addEventListener('click', () => {
-    const order = orderInput.value.trim();
-    if (order) {
-      orders.push(order);
+    const orderNumber = orderInput.value.trim();
+    const phoneNumber = phoneInput.value.trim();
+    if (orderNumber) {
+      orders.push({ orderNumber, phoneNumber });
       orderInput.value = '';
+      phoneInput.value = '';
       renderList();
     }
   });
@@ -116,6 +120,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       const header = sheetData.length > 0 ? sheetData[0] : [];
 
+      // Find "收件人电话" column index
+      let phoneColIndex = -1;
+      if (header && header.length > 0) {
+          phoneColIndex = header.findIndex(h => h && h.toString().trim() === "收件人电话");
+      }
+
       // Start with the header
       const newData = [header];
 
@@ -128,7 +138,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Create a new row. 
         // For now, we assume the Order Number goes to the first column (Column A).
         const newRow = [];
-        newRow[0] = order;
+        newRow[0] = order.orderNumber;
+
+        if (phoneColIndex !== -1) {
+            newRow[phoneColIndex] = order.phoneNumber;
+        }
 
         currentTemplateFields.forEach(field => {
           if (field.col && field.value !== undefined) {

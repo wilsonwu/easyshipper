@@ -92,9 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     subsection.dataset.templateId = templateId;
     
     const title = document.createElement('h3');
-    // Try to translate, fallback to ID
-    const nameKey = 'template_' + templateId;
-    title.innerText = getMessage(nameKey) || templateId;
+    title.innerText = templateId;
     subsection.appendChild(title);
 
     const fieldsContainer = document.createElement('div');

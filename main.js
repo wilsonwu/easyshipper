@@ -46,12 +46,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   getTemplates().then(files => {
     files.forEach(file => {
       const id = file.name.replace('.xlsx', '');
-      const nameKey = 'template_' + id;
-      const localizedName = chrome.i18n.getMessage(nameKey);
       
       const option = document.createElement('option');
       option.value = id; // Value is the filename without extension
-      option.innerText = localizedName || id; // Fallback to ID if no translation
+      option.innerText = id; // Use filename directly
       select.appendChild(option);
     });
   });

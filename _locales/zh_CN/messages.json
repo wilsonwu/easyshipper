@@ -23,6 +23,10 @@
     "message": "输入电话号码",
     "description": "Placeholder for phone number input"
   },
+  "iossPlaceholder": {
+    "message": "输入IOSS税号",
+    "description": "Placeholder for IOSS Tax ID input"
+  },
   "addressPlaceholder": {
     "message": "输入未格式化地址",
     "description": "Placeholder for unformatted address input"

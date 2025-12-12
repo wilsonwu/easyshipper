@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   document.getElementById('template-label').innerText = getMessage("templateLabel");
   document.getElementById('order-input').placeholder = getMessage("inputPlaceholder");
   document.getElementById('phone-input').placeholder = getMessage("phonePlaceholder");
+  document.getElementById('ioss-input').placeholder = getMessage("iossPlaceholder");
   document.getElementById('address-input').placeholder = getMessage("addressPlaceholder");
   document.getElementById('add-btn').innerText = getMessage("addBtn");
   document.getElementById('export-btn').innerText = getMessage("exportBtn");
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   const orderInput = document.getElementById('order-input');
   const phoneInput = document.getElementById('phone-input');
+  const iossInput = document.getElementById('ioss-input');
   const addressInput = document.getElementById('address-input');
   const addBtn = document.getElementById('add-btn');
   const orderList = document.getElementById('order-list');
@@ -71,6 +73,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const li = document.createElement('li');
       let displayText = `${order.orderNumber}`;
       if (order.phoneNumber) displayText += ` - ${order.phoneNumber}`;
+      if (order.iossNumber) displayText += ` - ${order.iossNumber}`;
       if (order.addressData && order.addressData.recipientName) displayText += ` - ${order.addressData.recipientName}`;
       
       li.textContent = displayText;
@@ -89,10 +92,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   async function parseAddress(address) {
     const items = await chrome.storage.sync.get(['azureEndpoint', 'azureApiKey', 'azureDeployment']);
     if (!items.azureEndpoint || !items.azureApiKey || !items.azureDeployment) {
-      throw new Error("Azure settings are missing.");
+      throw new Error("Azure settings are missing. Please go to Extension Options to configure them.");
     }
 
-    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress, recipientCurrency. If province/state is missing, infer it from the city/country. Infer the currency code (e.g. USD, GBP, EUR) based on the country. Address: ${address}`;
+    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress, recipientCurrency. If province/state is missing, infer it from the city/country. Infer the currency name in Chinese (e.g. 美元, 英镑, 欧元) based on the country. Address: ${address}`;
 
     const url = `${items.azureEndpoint}/openai/deployments/${items.azureDeployment}/chat/completions?api-version=2023-05-15`;
     
@@ -112,10 +115,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     if (!response.ok) {
-      throw new Error(`Azure API Error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error("Azure API Error Details:", errorText);
+      throw new Error(`Azure API Error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
+    console.log("Azure Response:", data);
     const content = data.choices[0].message.content;
     
     // Extract JSON from content if it contains other text
@@ -130,6 +136,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   addBtn.addEventListener('click', async () => {
     const orderNumber = orderInput.value.trim();
     const phoneNumber = phoneInput.value.trim();
+    const iossNumber = iossInput.value.trim();
     const rawAddress = addressInput.value.trim();
 
     if (orderNumber) {
@@ -143,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
           addressData = await parseAddress(rawAddress);
         } catch (error) {
-          console.error(error);
+          console.error("Address parsing error:", error);
           alert(getMessage("parseError") + "\n" + error.message);
           addBtn.innerText = originalBtnText;
           addBtn.disabled = false;
@@ -154,9 +161,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         addBtn.disabled = false;
       }
 
-      orders.push({ orderNumber, phoneNumber, rawAddress, addressData });
+      orders.push({ orderNumber, phoneNumber, iossNumber, rawAddress, addressData });
       orderInput.value = '';
       phoneInput.value = '';
+      iossInput.value = '';
       addressInput.value = '';
       renderList();
     }
@@ -193,6 +201,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       // Find columns indices
       let phoneColIndex = -1;
+      let iossColIndex = -1;
       let nameColIndex = -1;
       let countryColIndex = -1;
       let provinceColIndex = -1;
@@ -203,6 +212,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       if (header && header.length > 0) {
           phoneColIndex = header.findIndex(h => h && h.toString().trim() === "收件人电话");
+          iossColIndex = header.findIndex(h => h && h.toString().trim() === "IOSS税号");
           nameColIndex = header.findIndex(h => h && h.toString().trim() === "收件人姓名");
           countryColIndex = header.findIndex(h => h && h.toString().trim() === "收件人国家");
           provinceColIndex = header.findIndex(h => h && h.toString().trim() === "收件人省/州");
@@ -227,6 +237,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         newRow[0] = order.orderNumber;
 
         if (phoneColIndex !== -1) newRow[phoneColIndex] = order.phoneNumber;
+        if (iossColIndex !== -1) newRow[iossColIndex] = order.iossNumber;
         
         if (order.addressData) {
             if (nameColIndex !== -1) newRow[nameColIndex] = order.addressData.recipientName;

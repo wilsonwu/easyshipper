@@ -23,6 +23,18 @@
     "message": "输入电话号码",
     "description": "Placeholder for phone number input"
   },
+  "addressPlaceholder": {
+    "message": "输入未格式化地址",
+    "description": "Placeholder for unformatted address input"
+  },
+  "parsing": {
+    "message": "解析中...",
+    "description": "Text shown while parsing address"
+  },
+  "parseError": {
+    "message": "地址解析失败，请检查Azure设置。",
+    "description": "Error message for address parsing failure"
+  },
   "addBtn": {
     "message": "添加",
     "description": "Label for add button"

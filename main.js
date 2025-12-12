@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   document.getElementById('template-label').innerText = getMessage("templateLabel");
   document.getElementById('order-input').placeholder = getMessage("inputPlaceholder");
   document.getElementById('phone-input').placeholder = getMessage("phonePlaceholder");
+  document.getElementById('address-input').placeholder = getMessage("addressPlaceholder");
   document.getElementById('add-btn').innerText = getMessage("addBtn");
   document.getElementById('export-btn').innerText = getMessage("exportBtn");
   document.getElementById('list-header').innerText = getMessage("listHeader");
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   const orderInput = document.getElementById('order-input');
   const phoneInput = document.getElementById('phone-input');
+  const addressInput = document.getElementById('address-input');
   const addBtn = document.getElementById('add-btn');
   const orderList = document.getElementById('order-list');
   const exportBtn = document.getElementById('export-btn');
@@ -67,7 +69,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     orderList.innerHTML = '';
     orders.forEach((order, index) => {
       const li = document.createElement('li');
-      li.textContent = `${order.orderNumber} - ${order.phoneNumber}`;
+      let displayText = `${order.orderNumber}`;
+      if (order.phoneNumber) displayText += ` - ${order.phoneNumber}`;
+      if (order.addressData && order.addressData.recipientName) displayText += ` - ${order.addressData.recipientName}`;
+      
+      li.textContent = displayText;
       const removeBtn = document.createElement('button');
       removeBtn.textContent = getMessage("removeBtn");
       removeBtn.style.marginLeft = '10px';
@@ -80,13 +86,78 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
   }
 
-  addBtn.addEventListener('click', () => {
+  async function parseAddress(address) {
+    const items = await chrome.storage.sync.get(['azureEndpoint', 'azureApiKey', 'azureDeployment']);
+    if (!items.azureEndpoint || !items.azureApiKey || !items.azureDeployment) {
+      throw new Error("Azure settings are missing.");
+    }
+
+    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress. If province/state is missing, infer it from the city/country. Address: ${address}`;
+
+    const url = `${items.azureEndpoint}/openai/deployments/${items.azureDeployment}/chat/completions?api-version=2023-05-15`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': items.azureApiKey
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: "You are a helpful assistant that parses addresses into JSON." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.3
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Azure API Error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices[0].message.content;
+    
+    // Extract JSON from content if it contains other text
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]);
+    } else {
+      throw new Error("Failed to parse JSON from Azure response");
+    }
+  }
+
+  addBtn.addEventListener('click', async () => {
     const orderNumber = orderInput.value.trim();
     const phoneNumber = phoneInput.value.trim();
+    const rawAddress = addressInput.value.trim();
+
     if (orderNumber) {
-      orders.push({ orderNumber, phoneNumber });
+      let addressData = {};
+      
+      if (rawAddress) {
+        const originalBtnText = addBtn.innerText;
+        addBtn.innerText = getMessage("parsing");
+        addBtn.disabled = true;
+        
+        try {
+          addressData = await parseAddress(rawAddress);
+        } catch (error) {
+          console.error(error);
+          alert(getMessage("parseError") + "\n" + error.message);
+          addBtn.innerText = originalBtnText;
+          addBtn.disabled = false;
+          return; // Stop adding if parsing fails
+        }
+        
+        addBtn.innerText = originalBtnText;
+        addBtn.disabled = false;
+      }
+
+      orders.push({ orderNumber, phoneNumber, rawAddress, addressData });
       orderInput.value = '';
       phoneInput.value = '';
+      addressInput.value = '';
       renderList();
     }
   });
@@ -120,10 +191,23 @@ document.addEventListener('DOMContentLoaded', async function() {
       const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       const header = sheetData.length > 0 ? sheetData[0] : [];
 
-      // Find "收件人电话" column index
+      // Find columns indices
       let phoneColIndex = -1;
+      let nameColIndex = -1;
+      let countryColIndex = -1;
+      let provinceColIndex = -1;
+      let cityColIndex = -1;
+      let zipColIndex = -1;
+      let addressColIndex = -1;
+
       if (header && header.length > 0) {
           phoneColIndex = header.findIndex(h => h && h.toString().trim() === "收件人电话");
+          nameColIndex = header.findIndex(h => h && h.toString().trim() === "收件人姓名");
+          countryColIndex = header.findIndex(h => h && h.toString().trim() === "收件人国家");
+          provinceColIndex = header.findIndex(h => h && h.toString().trim() === "收件人省/州");
+          cityColIndex = header.findIndex(h => h && h.toString().trim() === "收件人城市");
+          zipColIndex = header.findIndex(h => h && h.toString().trim() === "收件人邮编");
+          addressColIndex = header.findIndex(h => h && h.toString().trim() === "收件人地址");
       }
 
       // Start with the header
@@ -140,8 +224,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         const newRow = [];
         newRow[0] = order.orderNumber;
 
-        if (phoneColIndex !== -1) {
-            newRow[phoneColIndex] = order.phoneNumber;
+        if (phoneColIndex !== -1) newRow[phoneColIndex] = order.phoneNumber;
+        
+        if (order.addressData) {
+            if (nameColIndex !== -1) newRow[nameColIndex] = order.addressData.recipientName;
+            if (countryColIndex !== -1) newRow[countryColIndex] = order.addressData.recipientCountry;
+            if (provinceColIndex !== -1) newRow[provinceColIndex] = order.addressData.recipientProvince;
+            if (cityColIndex !== -1) newRow[cityColIndex] = order.addressData.recipientCity;
+            if (zipColIndex !== -1) newRow[zipColIndex] = order.addressData.recipientZip;
+            if (addressColIndex !== -1) newRow[addressColIndex] = order.addressData.recipientAddress;
         }
 
         currentTemplateFields.forEach(field => {

@@ -23,6 +23,18 @@
     "message": "Enter Phone Number",
     "description": "Placeholder for phone number input"
   },
+  "addressPlaceholder": {
+    "message": "Enter Unformatted Address",
+    "description": "Placeholder for unformatted address input"
+  },
+  "parsing": {
+    "message": "Parsing...",
+    "description": "Text shown while parsing address"
+  },
+  "parseError": {
+    "message": "Failed to parse address. Please check your Azure settings.",
+    "description": "Error message for address parsing failure"
+  },
   "addBtn": {
     "message": "Add",
     "description": "Label for add button"

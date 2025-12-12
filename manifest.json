@@ -12,6 +12,12 @@
   "side_panel": {
     "default_path": "main.html"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["_locales/*/messages.json", "templates/*.xlsx"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "background": {
     "service_worker": "service-worker.js"
   },

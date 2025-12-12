@@ -1,12 +1,17 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  await window.i18nHelper.init();
+  const getMessage = (key) => window.i18nHelper.getMessage(key);
+
   // Localize static elements
-  document.getElementById('options-title').innerText = chrome.i18n.getMessage("optionsTitle");
-  document.getElementById('azure-settings-title').innerText = chrome.i18n.getMessage("azureOpenAISettings");
-  document.getElementById('azure-endpoint-label').innerText = chrome.i18n.getMessage("azureEndpoint");
-  document.getElementById('azure-apikey-label').innerText = chrome.i18n.getMessage("azureApiKey");
-  document.getElementById('azure-deployment-label').innerText = chrome.i18n.getMessage("azureDeploymentName");
-  document.getElementById('template-settings-title').innerText = chrome.i18n.getMessage("templateSettings");
-  document.getElementById('save-btn').innerText = chrome.i18n.getMessage("saveBtn");
+  document.getElementById('options-title').innerText = getMessage("optionsTitle");
+  document.getElementById('general-settings-title').innerText = getMessage("generalSettings");
+  document.getElementById('language-label').innerText = getMessage("languageLabel");
+  document.getElementById('azure-settings-title').innerText = getMessage("azureOpenAISettings");
+  document.getElementById('azure-endpoint-label').innerText = getMessage("azureEndpoint");
+  document.getElementById('azure-apikey-label').innerText = getMessage("azureApiKey");
+  document.getElementById('azure-deployment-label').innerText = getMessage("azureDeploymentName");
+  document.getElementById('template-settings-title').innerText = getMessage("templateSettings");
+  document.getElementById('save-btn').innerText = getMessage("saveBtn");
 
   const container = document.getElementById('template-settings-container');
 
@@ -72,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const items = await chrome.storage.sync.get(null);
   
   // Static settings
+  document.getElementById('app-language').value = items.appLanguage || 'default';
   document.getElementById('azure-endpoint').value = items.azureEndpoint || '';
   document.getElementById('azure-apikey').value = items.azureApiKey || '';
   document.getElementById('azure-deployment').value = items.azureDeployment || '';
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const title = document.createElement('h3');
     // Try to translate, fallback to ID
     const nameKey = 'template_' + templateId;
-    title.innerText = chrome.i18n.getMessage(nameKey) || templateId;
+    title.innerText = getMessage(nameKey) || templateId;
     subsection.appendChild(title);
 
     const fieldsContainer = document.createElement('div');
@@ -114,6 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Save settings
   document.getElementById('save-btn').addEventListener('click', () => {
+    const appLanguage = document.getElementById('app-language').value;
     const azureEndpoint = document.getElementById('azure-endpoint').value;
     const azureApiKey = document.getElementById('azure-apikey').value;
     const azureDeployment = document.getElementById('azure-deployment').value;
@@ -142,6 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     const settings = {
+      appLanguage,
       azureEndpoint,
       azureApiKey,
       azureDeployment,
@@ -150,10 +158,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     chrome.storage.sync.set(settings, () => {
       const status = document.getElementById('status');
-      status.textContent = chrome.i18n.getMessage("saveSuccess");
+      status.textContent = getMessage("saveSuccess");
       setTimeout(() => {
         status.textContent = '';
-      }, 2000);
+        // Reload to apply language change
+        window.location.reload();
+      }, 1000);
     });
   });
 });

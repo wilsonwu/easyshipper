@@ -39,6 +39,14 @@
     "message": "删除",
     "description": "Label for remove button"
   },
+  "generalSettings": {
+    "message": "通用设置",
+    "description": "Header for general settings"
+  },
+  "languageLabel": {
+    "message": "语言",
+    "description": "Label for language selection"
+  },
   "optionsTitle": {
     "message": "设置",
     "description": "Title for the options page"

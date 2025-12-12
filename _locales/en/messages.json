@@ -39,6 +39,14 @@
     "message": "Remove",
     "description": "Label for remove button"
   },
+  "generalSettings": {
+    "message": "General Settings",
+    "description": "Header for general settings"
+  },
+  "languageLabel": {
+    "message": "Language",
+    "description": "Label for language selection"
+  },
   "optionsTitle": {
     "message": "Settings",
     "description": "Title for the options page"

@@ -1,12 +1,15 @@
 console.log('This is a popup!');
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('title').innerText = chrome.i18n.getMessage("popupTitle");
-  document.getElementById('template-label').innerText = chrome.i18n.getMessage("templateLabel");
-  document.getElementById('order-input').placeholder = chrome.i18n.getMessage("inputPlaceholder");
-  document.getElementById('add-btn').innerText = chrome.i18n.getMessage("addBtn");
-  document.getElementById('export-btn').innerText = chrome.i18n.getMessage("exportBtn");
-  document.getElementById('list-header').innerText = chrome.i18n.getMessage("listHeader");
+document.addEventListener('DOMContentLoaded', async function() {
+  await window.i18nHelper.init();
+  const getMessage = (key) => window.i18nHelper.getMessage(key);
+
+  document.getElementById('title').innerText = getMessage("popupTitle");
+  document.getElementById('template-label').innerText = getMessage("templateLabel");
+  document.getElementById('order-input').placeholder = getMessage("inputPlaceholder");
+  document.getElementById('add-btn').innerText = getMessage("addBtn");
+  document.getElementById('export-btn').innerText = getMessage("exportBtn");
+  document.getElementById('list-header').innerText = getMessage("listHeader");
 
   const select = document.getElementById('template-select');
 
@@ -66,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const li = document.createElement('li');
       li.textContent = order;
       const removeBtn = document.createElement('button');
-      removeBtn.textContent = chrome.i18n.getMessage("removeBtn");
+      removeBtn.textContent = getMessage("removeBtn");
       removeBtn.style.marginLeft = '10px';
       removeBtn.onclick = () => {
         orders.splice(index, 1);

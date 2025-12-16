@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             isUK = country === 'uk' || country === 'united kingdom' || country === 'great britain' || country === 'gb';
         }
 
-        if (isUK) {
+        if (isUK && selectedTemplate === '燕文小包') {
             if (senderTaxColIndex !== -1) newRow[senderTaxColIndex] = order.iossNumber;
         } else {
             if (iossColIndex !== -1) newRow[iossColIndex] = order.iossNumber;

@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       let zipColIndex = -1;
       let addressColIndex = -1;
       let currencyColIndex = -1;
+      let senderTaxColIndex = -1;
 
       if (header && header.length > 0) {
           phoneColIndex = header.findIndex(h => h && h.toString().trim() === "收件人电话");
@@ -220,6 +221,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           zipColIndex = header.findIndex(h => h && h.toString().trim() === "收件人邮编");
           addressColIndex = header.findIndex(h => h && h.toString().trim() === "收件人地址");
           currencyColIndex = header.findIndex(h => h && h.toString().trim() === "币种类型");
+          senderTaxColIndex = header.findIndex(h => h && h.toString().trim() === "发件人税号信息");
       }
 
       // Start with the header
@@ -237,7 +239,19 @@ document.addEventListener('DOMContentLoaded', async function() {
         newRow[0] = order.orderNumber;
 
         if (phoneColIndex !== -1) newRow[phoneColIndex] = order.phoneNumber;
-        if (iossColIndex !== -1) newRow[iossColIndex] = order.iossNumber;
+        
+        // Handle IOSS logic for UK
+        let isUK = false;
+        if (order.addressData && order.addressData.recipientCountry) {
+            const country = order.addressData.recipientCountry.trim().toLowerCase();
+            isUK = country === 'uk' || country === 'united kingdom' || country === 'great britain' || country === 'gb';
+        }
+
+        if (isUK) {
+            if (senderTaxColIndex !== -1) newRow[senderTaxColIndex] = order.iossNumber;
+        } else {
+            if (iossColIndex !== -1) newRow[iossColIndex] = order.iossNumber;
+        }
         
         if (order.addressData) {
             if (nameColIndex !== -1) newRow[nameColIndex] = order.addressData.recipientName;

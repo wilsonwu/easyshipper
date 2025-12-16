@@ -1,5 +1,3 @@
-console.log('This is a popup!');
-
 document.addEventListener('DOMContentLoaded', async function() {
   await window.i18nHelper.init();
   const getMessage = (key) => window.i18nHelper.getMessage(key);

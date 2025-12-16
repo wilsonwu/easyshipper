@@ -1,29 +1,177 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --primary-hover: #0056b3;
+        --bg-color: #f4f6f8;
+        --card-bg: #ffffff;
+        --text-color: #333;
+        --border-color: #ddd;
+        --input-bg: #fff;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 16px;
+        font-size: 14px;
+      }
+
+      h1, h2 {
+        margin-top: 0;
+        color: #2c3e50;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 5px;
+        display: inline-block;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .control-group {
+        margin-bottom: 12px;
+      }
+
+      .control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="text"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-family: inherit;
+        font-size: 13px;
+        background-color: var(--input-bg);
+        transition: border-color 0.2s;
+      }
+
+      input[type="text"]:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      #order-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      #order-list li {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      
+      #order-list li strong {
+        color: var(--primary-color);
+      }
+
+      .action-bar {
+        position: sticky;
+        bottom: 0;
+        background: var(--bg-color);
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
-    <h1 id="title">Hello Extensions</h1>
-    <div class="control-group">
-      <label id="template-label" for="template-select">Template:</label>
-      <select id="template-select">
-      </select>
+    <h1 id="title">EasyShipper</h1>
+    
+    <div class="card">
+      <div class="control-group">
+        <label id="template-label" for="template-select">Template</label>
+        <select id="template-select">
+        </select>
+      </div>
     </div>
 
-    <div class="control-group">
-      <input type="text" id="order-input" placeholder="Enter Order Number">
-      <input type="text" id="phone-input" placeholder="Enter Phone Number">
-      <input type="text" id="ioss-input" placeholder="Enter IOSS Tax ID">
-      <textarea id="address-input" rows="3" placeholder="Enter Unformatted Address" style="width: 100%; margin-top: 5px; box-sizing: border-box;"></textarea>
-      <button id="add-btn" style="margin-top: 5px;">Add</button>
+    <div class="card">
+      <div class="control-group">
+        <input type="text" id="order-input" placeholder="Order Number">
+      </div>
+      <div class="control-group">
+        <input type="text" id="phone-input" placeholder="Phone Number">
+      </div>
+      <div class="control-group">
+        <input type="text" id="ioss-input" placeholder="IOSS Tax ID">
+      </div>
+      <div class="control-group">
+        <textarea id="address-input" rows="3" placeholder="Paste Address Here..."></textarea>
+      </div>
+      <button id="add-btn">Add Order</button>
     </div>
 
-    <h2 id="list-header">Added Orders</h2>
-    <ul id="order-list">
-    </ul>
+    <div class="card">
+      <h2 id="list-header">Added Orders</h2>
+      <ul id="order-list">
+      </ul>
+    </div>
 
-    <div class="control-group">
-      <button id="export-btn">Export</button>
+    <div class="action-bar">
+      <button id="export-btn">Export to Excel</button>
     </div>
 
     <script src="lib/xlsx.full.min.js"></script>

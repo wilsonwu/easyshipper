@@ -4,22 +4,166 @@
   <meta charset="UTF-8">
   <title>EasyShipper Settings</title>
   <style>
-    body { padding: 20px; font-family: sans-serif; }
-    .section { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
-    .section h2 { margin-top: 0; }
-    .form-group { margin-bottom: 10px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input[type="text"], input[type="password"] { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background-color: #0056b3; }
-    #status { margin-top: 10px; color: green; font-weight: bold; }
-    .field-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-    .field-row input { flex: 1; }
-    .field-row input[type="number"] { width: 80px; flex: none; }
-    .remove-field-btn { background-color: #dc3545; padding: 5px 10px; }
-    .remove-field-btn:hover { background-color: #c82333; }
-    .add-field-btn { background-color: #28a745; margin-top: 10px; }
-    .add-field-btn:hover { background-color: #218838; }
+    :root {
+      --primary-color: #007bff;
+      --primary-hover: #0056b3;
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-color: #333;
+      --border-color: #ddd;
+      --input-bg: #fff;
+      --danger-color: #dc3545;
+      --danger-hover: #c82333;
+      --success-color: #28a745;
+      --success-hover: #218838;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      font-size: 14px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+      display: inline-block;
+    }
+
+    .section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 14px;
+      background-color: var(--input-bg);
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    #save-btn {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px;
+    }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      min-height: 20px;
+    }
+
+    /* Dynamic Field Styles */
+    .field-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .field-row input {
+      flex: 1;
+    }
+
+    .field-row input[type="text"].col-input {
+      flex: 0 0 80px; /* Fixed width for column letter */
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .remove-field-btn {
+      background-color: var(--danger-color);
+      padding: 8px 12px;
+    }
+
+    .remove-field-btn:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .add-field-btn {
+      background-color: var(--success-color);
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .add-field-btn:hover {
+      background-color: var(--success-hover);
+    }
+    
+    .template-block {
+        border: 1px solid #eee;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        background: #fafafa;
+    }
+    
+    .template-block h3 {
+        margin-top: 0;
+        font-size: 1rem;
+        color: #666;
+    }
   </style>
 </head>
 <body>
@@ -41,15 +185,15 @@
     <h2 id="azure-settings-title">Azure OpenAI Settings</h2>
     <div class="form-group">
       <label id="azure-endpoint-label" for="azure-endpoint">Endpoint</label>
-      <input type="text" id="azure-endpoint">
+      <input type="text" id="azure-endpoint" placeholder="https://your-resource.openai.azure.com/">
     </div>
     <div class="form-group">
       <label id="azure-apikey-label" for="azure-apikey">API Key</label>
-      <input type="password" id="azure-apikey">
+      <input type="password" id="azure-apikey" placeholder="Your API Key">
     </div>
     <div class="form-group">
       <label id="azure-deployment-label" for="azure-deployment">Deployment Name</label>
-      <input type="text" id="azure-deployment">
+      <input type="text" id="azure-deployment" placeholder="e.g. gpt-35-turbo">
     </div>
   </div>
 
@@ -60,7 +204,7 @@
     </div>
   </div>
 
-  <button id="save-btn">Save</button>
+  <button id="save-btn">Save Settings</button>
   <div id="status"></div>
 
   <script src="i18n-helper.js"></script>

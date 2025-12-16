@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const colInput = document.createElement('input');
     colInput.type = 'text';
-    colInput.placeholder = 'Col (e.g. A, B)';
-    colInput.className = 'field-col';
+    colInput.placeholder = 'Col';
+    colInput.className = 'col-input field-col';
     colInput.value = fieldConfig.col || '';
 
     const valueInput = document.createElement('input');
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Generate UI for templates
   availableTemplates.forEach(templateId => {
     const subsection = document.createElement('div');
-    subsection.className = 'subsection';
+    subsection.className = 'template-block';
     subsection.dataset.templateId = templateId;
     
     const title = document.createElement('h3');
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const newTemplateConfig = {};
 
     // Collect dynamic settings
-    const subsections = container.querySelectorAll('.subsection');
+    const subsections = container.querySelectorAll('.template-block');
     subsections.forEach(sub => {
       const templateId = sub.dataset.templateId;
       const rows = sub.querySelectorAll('.field-row');

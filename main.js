@@ -69,15 +69,37 @@ document.addEventListener('DOMContentLoaded', async function() {
     orderList.innerHTML = '';
     orders.forEach((order, index) => {
       const li = document.createElement('li');
-      let displayText = `${order.orderNumber}`;
-      if (order.phoneNumber) displayText += ` - ${order.phoneNumber}`;
-      if (order.iossNumber) displayText += ` - ${order.iossNumber}`;
-      if (order.addressData && order.addressData.recipientName) displayText += ` - ${order.addressData.recipientName}`;
       
-      li.textContent = displayText;
+      const detailsDiv = document.createElement('div');
+      detailsDiv.style.flex = '1';
+      
+      const orderNumDiv = document.createElement('div');
+      orderNumDiv.innerHTML = `<strong>${order.orderNumber}</strong>`;
+      detailsDiv.appendChild(orderNumDiv);
+
+      if (order.phoneNumber) {
+          const phoneDiv = document.createElement('div');
+          phoneDiv.textContent = `📞 ${order.phoneNumber}`;
+          detailsDiv.appendChild(phoneDiv);
+      }
+      
+      if (order.addressData && order.addressData.recipientName) {
+          const nameDiv = document.createElement('div');
+          nameDiv.textContent = `👤 ${order.addressData.recipientName}, ${order.addressData.recipientCountry || ''}`;
+          detailsDiv.appendChild(nameDiv);
+      }
+
+      li.appendChild(detailsDiv);
+
       const removeBtn = document.createElement('button');
       removeBtn.textContent = getMessage("removeBtn");
-      removeBtn.style.marginLeft = '10px';
+      removeBtn.style.backgroundColor = '#dc3545'; // Danger color
+      removeBtn.style.marginTop = '5px';
+      removeBtn.style.padding = '5px 10px';
+      removeBtn.style.fontSize = '12px';
+      removeBtn.style.width = 'auto';
+      removeBtn.style.alignSelf = 'flex-end';
+      
       removeBtn.onclick = () => {
         orders.splice(index, 1);
         renderList();

@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       throw new Error("Azure settings are missing. Please go to Extension Options to configure them.");
     }
 
-    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress, recipientCurrency. If province/state is missing, infer it from the city/country. Infer the currency name in Chinese (e.g. 美元, 英镑, 欧元) based on the country. Address: ${address}`;
+    const prompt = `Parse the following address into a JSON object with keys: recipientName, recipientCountry, recipientProvince, recipientCity, recipientZip, recipientAddress, recipientCurrency. If province/state is missing, infer it from the city/country. Infer the currency code (e.g. USD, GBP, EUR) based on the country. Address: ${address}`;
 
     const url = `${items.azureEndpoint}/openai/deployments/${items.azureDeployment}/chat/completions?api-version=2023-05-15`;
     

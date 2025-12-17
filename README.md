@@ -1,65 +1,68 @@
 # EasyShipper (易发货)
 
-EasyShipper is a browser extension designed to streamline the process of creating shipping order lists. It allows you to input order details, parse unformatted addresses using AI, and export the data into pre-defined Excel templates.
+EasyShipper 是一款专为跨境电商卖家设计的浏览器扩展，旨在简化发货单制作流程。它能够智能解析地址、管理订单数据，并一键导出适配物流商要求的 Excel 表格。
 
-## Features
+目前版本特别针对 **Etsy** 平台和 **燕文小包** 物流模板进行了深度优化。
 
-*   **Excel Template Support**: Works with your custom Excel (`.xlsx`) templates.
-*   **AI Address Parsing**: Uses Azure OpenAI to intelligently parse unformatted address blocks into structured data (Name, Street, City, State, Zip, Country).
-*   **Currency Inference**: Automatically infers the currency (e.g., 美元, 欧元) based on the destination country.
-*   **Data Entry**: Easily input Order Numbers, Phone Numbers, and IOSS Tax IDs.
-*   **One-Click Export**: Generate and download the filled Excel file instantly.
-*   **Multi-language Support**: English and Simplified Chinese.
+## 主要功能
 
-## Installation
+*   **智能地址解析**: 集成 Azure OpenAI，能够将杂乱的地址文本智能解析为结构化数据（姓名、街道、城市、省州、邮编、国家）。
+*   **多模板支持**: 支持自定义 Excel (`.xlsx`) 模板，目前内置并完美支持 **燕文小包** 模板。
+*   **Etsy 平台专属优化**:
+    *   针对 Etsy 订单，支持自动根据收件人国家（英国或欧盟）自动填写对应的平台税号（IOSS/VAT）。
+    *   **英国 (UK)**: 自动填写税号 `370 6004 28` 到“发件人税号信息”列。
+    *   **欧盟 (EU)**: 自动填写税号 `IM3720000224` 到“IOSS税号”列。
+*   **动态字段映射**: 可在设置页面为不同模板配置固定的列值（如默认填写“物品名称”、“申报价值”等）。
+*   **一键导出**: 批量录入订单后，一键生成并下载填充好的 Excel 文件。
+*   **多语言支持**: 支持简体中文和英文界面。
 
-1.  Clone or download this repository.
-2.  Open your browser (Chrome or Edge) and navigate to `chrome://extensions`.
-3.  Enable **Developer mode** (usually a toggle in the top right).
-4.  Click **Load unpacked**.
-5.  Select the folder containing this extension.
+## 安装说明
 
-## Configuration
+1.  下载本插件的压缩包或克隆代码仓库。
+2.  打开 Chrome 或 Edge 浏览器，进入扩展程序管理页面 (`chrome://extensions`)。
+3.  开启右上角的 **开发者模式 (Developer mode)**。
+4.  点击 **加载已解压的扩展程序 (Load unpacked)**。
+5.  选择包含本插件文件的文件夹。
 
-### 1. Azure OpenAI Setup (Required for Address Parsing)
+## 配置指南
 
-To use the AI address parsing feature, you need access to an Azure OpenAI endpoint.
+### 1. Azure OpenAI 设置 (使用地址识别功能必须配置)
 
-1.  Right-click the EasyShipper extension icon and select **Options**.
-2.  Under **Azure OpenAI Settings**, enter your:
-    *   **Endpoint**: Your Azure OpenAI resource endpoint (e.g., `https://your-resource.openai.azure.com/`).
-    *   **API Key**: Your Azure OpenAI API key.
-    *   **Deployment Name**: The name of your deployed model (e.g., `gpt-35-turbo` or `gpt-4`).
-3.  Click **Save**.
+为了使用 AI 地址解析功能，您需要配置 Azure OpenAI 服务。
 
-### 2. Template Setup
+1.  在插件图标上右键，选择 **选项 (Options)**，或在插件界面点击设置按钮。
+2.  在 **Azure OpenAI Settings** 区域填写：
+    *   **Endpoint**: 您的 Azure OpenAI 资源端点 (例如 `https://your-resource.openai.azure.com/`)。
+    *   **API Key**: 您的 API 密钥。
+    *   **Deployment Name**: 部署的模型名称 (建议使用 `gpt-35-turbo` 或更高版本)。
+3.  点击 **保存 (Save)**。
 
-1.  Place your Excel template files (`.xlsx`) in the `templates/` folder inside the extension directory.
-2.  Ensure your template has a header row (usually the first row).
-3.  The extension looks for specific column names to map the data. Ensure your template uses the following column headers (in Chinese):
+### 2. 平台设置
 
-    *   `收件人电话` (Recipient Phone)
-    *   `IOSS税号` (IOSS Tax ID)
-    *   `收件人姓名` (Recipient Name)
-    *   `收件人国家` (Recipient Country)
-    *   `收件人省/州` (Recipient Province/State)
-    *   `收件人城市` (Recipient City)
-    *   `收件人邮编` (Recipient Zip Code)
-    *   `收件人地址` (Recipient Address)
-    *   `币种类型` (Currency Type)
+在设置页面的 **General Settings** 中，您可以选择当前操作的电商平台：
+*   **Etsy**: 开启针对 Etsy 的税号自动填充功能。
+*   **None**: 关闭特定平台的自动化逻辑。
 
-    *Note: The Order Number is currently placed in the first column (Column A) by default.*
+### 3. 模板与字段配置
 
-## Usage
+插件默认读取 `templates/` 目录下的 Excel 文件。
+*   **燕文小包**: 插件内置了对该模板的特殊逻辑支持（如英国税号列的特殊处理）。
+*   **自定义列**: 在设置页面下方，您可以为选定的模板添加固定值字段。例如，您可以设置“第 B 列”自动填写“礼品”。
 
-1.  Click the EasyShipper icon to open the popup.
-2.  **Select Template**: Choose a template from the dropdown list.
-3.  **Enter Details**:
-    *   **Order Number**: (Required)
-    *   **Phone Number**: (Optional)
-    *   **IOSS Tax ID**: (Optional)
-    *   **Unformatted Address**: Paste the full address block here.
-4.  **Add Order**:
-    *   If you entered an address, the button will show "Parsing...". The extension will use AI to extract the details.
-    *   Once parsed, the order is added to the list below.
-5.  **Export**: Click the **Export** button to download the Excel file with all added orders.
+## 使用方法
+
+1.  点击浏览器侧边栏或插件图标打开 EasyShipper。
+2.  **选择模板**: 在下拉框中选择 `燕文小包` 或其他模板。
+3.  **录入订单**:
+    *   **订单号**: 必填。
+    *   **电话**: 选填。
+    *   **IOSS 税号**: 选填。如果留空且平台选择了 Etsy，插件会自动根据国家填入税号。
+    *   **地址信息**: 粘贴完整的收件人地址文本。
+4.  **添加订单**:
+    *   点击 **Add Order**。插件会自动调用 AI 解析地址。
+    *   解析成功后，订单会显示在下方列表中。
+5.  **导出**: 点击底部的 **Export to Excel** 按钮，即可下载生成的发货单。
+
+## 版本历史
+
+查看 [CHANGELOG.md](CHANGELOG.md) 获取详细更新日志。

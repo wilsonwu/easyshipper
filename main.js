@@ -252,6 +252,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       const templateConfig = settings.templateConfig || {};
       const currentTemplateFields = templateConfig[selectedTemplate] || [];
 
+      const euCountries = [
+          'austria', 'belgium', 'bulgaria', 'croatia', 'cyprus', 'czechia', 'denmark', 
+          'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'ireland', 
+          'italy', 'latvia', 'lithuania', 'luxembourg', 'malta', 'netherlands', 'poland', 
+          'portugal', 'romania', 'slovakia', 'slovenia', 'spain', 'sweden'
+      ];
+
       orders.forEach((order) => {
         // Create a new row. 
         // For now, we assume the Order Number goes to the first column (Column A).
@@ -268,13 +275,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (order.addressData && order.addressData.recipientCountry) {
             const country = order.addressData.recipientCountry.trim().toLowerCase();
             isUK = ['uk', 'united kingdom', 'great britain', 'gb'].includes(country);
-            
-            const euCountries = [
-                'austria', 'belgium', 'bulgaria', 'croatia', 'cyprus', 'czechia', 'denmark', 
-                'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'ireland', 
-                'italy', 'latvia', 'lithuania', 'luxembourg', 'malta', 'netherlands', 'poland', 
-                'portugal', 'romania', 'slovakia', 'slovenia', 'spain', 'sweden'
-            ];
             isEU = euCountries.includes(country);
         }
 

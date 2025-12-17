@@ -260,17 +260,37 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         if (phoneColIndex !== -1) newRow[phoneColIndex] = order.phoneNumber;
         
-        // Handle IOSS logic for UK
+        // Handle IOSS logic
+        let iossValue = order.iossNumber;
         let isUK = false;
+        let isEU = false;
+
         if (order.addressData && order.addressData.recipientCountry) {
             const country = order.addressData.recipientCountry.trim().toLowerCase();
-            isUK = country === 'uk' || country === 'united kingdom' || country === 'great britain' || country === 'gb';
+            isUK = ['uk', 'united kingdom', 'great britain', 'gb'].includes(country);
+            
+            const euCountries = [
+                'austria', 'belgium', 'bulgaria', 'croatia', 'cyprus', 'czechia', 'denmark', 
+                'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'ireland', 
+                'italy', 'latvia', 'lithuania', 'luxembourg', 'malta', 'netherlands', 'poland', 
+                'portugal', 'romania', 'slovakia', 'slovenia', 'spain', 'sweden'
+            ];
+            isEU = euCountries.includes(country);
+        }
+
+        // Auto-fill tax ID for '燕文小包' if empty
+        if (selectedTemplate === '燕文小包' && !iossValue) {
+            if (isUK) {
+                iossValue = '370 6004 28';
+            } else if (isEU) {
+                iossValue = 'IM3720000224';
+            }
         }
 
         if (isUK && selectedTemplate === '燕文小包') {
-            if (senderTaxColIndex !== -1) newRow[senderTaxColIndex] = order.iossNumber;
+            if (senderTaxColIndex !== -1) newRow[senderTaxColIndex] = iossValue;
         } else {
-            if (iossColIndex !== -1) newRow[iossColIndex] = order.iossNumber;
+            if (iossColIndex !== -1) newRow[iossColIndex] = iossValue;
         }
         
         if (order.addressData) {

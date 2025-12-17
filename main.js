@@ -278,8 +278,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             isEU = euCountries.includes(country);
         }
 
-        // Auto-fill tax ID for '燕文小包' if empty
-        if (selectedTemplate === '燕文小包' && !iossValue) {
+        // Auto-fill tax ID for '燕文小包' if empty and platform is Etsy
+        const isEtsy = (settings.appPlatform || 'Etsy') === 'Etsy';
+        
+        if (selectedTemplate === '燕文小包' && !iossValue && isEtsy) {
             if (isUK) {
                 iossValue = '370 6004 28';
             } else if (isEU) {

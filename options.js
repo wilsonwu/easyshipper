@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Static settings
   document.getElementById('app-language').value = items.appLanguage || 'default';
+  document.getElementById('app-platform').value = items.appPlatform || 'Etsy';
   document.getElementById('azure-endpoint').value = items.azureEndpoint || '';
   document.getElementById('azure-apikey').value = items.azureApiKey || '';
   document.getElementById('azure-deployment').value = items.azureDeployment || '';
@@ -119,6 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Save settings
   document.getElementById('save-btn').addEventListener('click', () => {
     const appLanguage = document.getElementById('app-language').value;
+    const appPlatform = document.getElementById('app-platform').value;
     const azureEndpoint = document.getElementById('azure-endpoint').value;
     const azureApiKey = document.getElementById('azure-apikey').value;
     const azureDeployment = document.getElementById('azure-deployment').value;
@@ -148,6 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const settings = {
       appLanguage,
+      appPlatform,
       azureEndpoint,
       azureApiKey,
       azureDeployment,

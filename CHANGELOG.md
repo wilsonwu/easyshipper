@@ -2,6 +2,10 @@
 
 All notable changes to the "EasyShipper" extension will be documented in this file.
 
+## [1.4] - 2025-12-17
+### Added
+- **App Icon**: Added a custom application icon for the extension.
+
 ## [1.3] - 2025-12-17
 
 ### Added
